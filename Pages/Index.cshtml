@@ -1,0 +1,21 @@
+﻿@page
+@model IndexModel
+@inject IHttpContextAccessor contxt;
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome, @Model.FullName!</h1>
+
+    <div class="user-info">
+        <p><strong>Full Name:</strong> @Model.FullName</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Credit Card Number:</strong> @Model.CreditCardNo</p>
+        <p><strong>Gender:</strong> @Model.Gender</p>
+        <p><strong>Mobile Number:</strong> @Model.MobileNo</p>
+        <p><strong>Delivery Address:</strong> @Model.DeliveryAddress</p>
+        <p><strong>About Me:</strong> @Model.AboutMe</p>
+        <p><strong>Photo:</strong> @Model.Photo</p>
+    </div>
+</div>
