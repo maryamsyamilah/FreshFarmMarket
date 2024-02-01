@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
+using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace FreshFarmMarket.Pages
 {
@@ -31,14 +34,14 @@ namespace FreshFarmMarket.Pages
 		{
 			if (ModelState.IsValid)
 			{
-				var existingUser = await _userManager.FindByEmailAsync(RModel.Email);
-				if (existingUser != null)
+				var existingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == RModel.Email);
+				if (existingUser == null)
 				{
-					ModelState.AddModelError(string.Empty, "Email is already registered.");
+					ModelState.AddModelError(string.Empty, "Email has already been registered.");
 					return Page();
 				}
 
-                var dataProtectionProvider = DataProtectionProvider.Create("EncryptData");
+				var dataProtectionProvider = DataProtectionProvider.Create("EncryptData");
                 var protector = dataProtectionProvider.CreateProtector("MySecretKey");
 
 				var user = new ApplicationUser
@@ -52,12 +55,15 @@ namespace FreshFarmMarket.Pages
 					MobileNo = WebUtility.HtmlEncode(RModel.MobileNo),
 					DeliveryAddress = WebUtility.HtmlEncode(RModel.DeliveryAddress),
 					AboutMe = WebUtility.HtmlEncode(RModel.AboutMe),
-					Photo = WebUtility.HtmlEncode(RModel.Photo)
+					Photo = WebUtility.HtmlEncode(RModel.Photo),
+					LastPasswordChangeDate = DateTime.UtcNow
 				};
 
 				var result = await _userManager.CreateAsync(user, RModel.Password);
 				if (result.Succeeded)
 				{
+					
+
 					await _signInManager.SignInAsync(user, isPersistent: false);
 					return RedirectToPage("Login");
 				}
@@ -69,5 +75,5 @@ namespace FreshFarmMarket.Pages
 			}
 			return Page();
 		}
-	}
+    }
 }

@@ -45,9 +45,6 @@ namespace FreshFarmMarket.ViewModels
         public string Photo { get; set; }
 
 		[Required(ErrorMessage = "About Me is required")]
-		public string AboutMe
-		{
-			get; set;
-		}
+		public string AboutMe { get; set;}
 	}
 }

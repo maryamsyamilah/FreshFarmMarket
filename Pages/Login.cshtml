@@ -2,6 +2,23 @@
 @model FreshFarmMarket.Pages.LoginModel
 @{
 }
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
+<script>
+	function validateEmail() {
+		var email = document.getElementById('RModel_Email').value;
+		var regex = /^\w+[\+\.\w-]*@@([\w -] +\.)*\w+[\w-]*\.([a-z]{2,4}|\d+)$/i;
+		if (!regex.test(email)) {
+			document.getElementById("emailCheck").innerText = "Invalid email format";
+		} else {
+			document.getElementById("emailCheck").innerText = "";
+		}
+	}
+
+	function onSubmit(token) {
+		document.getElementById("login_form").submit();
+	}
+</script>
 
 <div class="container mt-5">
 
@@ -10,12 +27,12 @@
 		<div class="col-sm-12 col-md-12 col-lg-4">
 			<h1 class="mb-3">Login </h1>
 
-			<form method="post" asp-antiforgery="true">
+			<form id="login_form" method="post" asp-antiforgery="true">
 
 				<div class="mb-3">
 					<label class="form-label" asp-for="LModel.Email">Email Address</label>
-					<input type="Text" asp-for="LModel.Email" class="form-control" />
-					<span asp-validaton-for="LModel.Email" class="text-danger"></span>
+					<input type="Text" asp-for="LModel.Email" class="form-control" onkeyup="validateEmail()" />
+					<span id="emailCheck"></span>
 				</div>
 
 				<div class="mb-3">
@@ -25,8 +42,16 @@
 				</div>
 
 				<div class="mb-3">
-					<button type="submit" class="btn btn-primary">Login</button>
+					<button 
+						type="submit" 
+						class="g-recaptcha"
+						data-sitekey="6LcQ_2IpAAAAAJMGIkObS1wfjsgM9-od-Gx2uUcv"
+						data-callback="onSubmit"
+						data-action="submit">
+						Login
+					</button>
 				</div>
+				<div asp-validation-summary="All" class="text-danger"></div>
 			</form>
 		</div>
 	</div>

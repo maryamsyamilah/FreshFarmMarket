@@ -8,7 +8,6 @@ namespace FreshFarmMarket.Model
     {
 
         private readonly IConfiguration _configuration;
-        //public AuthDbContext(DbContextOptions<AuthDbContext> options):base(options){ }
         public UserDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -17,5 +16,7 @@ namespace FreshFarmMarket.Model
         {
             string connectionString = _configuration.GetConnectionString("AuthConnectionString"); optionsBuilder.UseSqlServer(connectionString);
         }
-    }
+
+		public DbSet<AuditLog> AuditLogs { get; set; }
+	}
 }

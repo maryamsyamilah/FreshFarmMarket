@@ -25,7 +25,7 @@ namespace FreshFarmMarket.Model
 		[Required(ErrorMessage = "Email Address is required")]
 		[EmailAddress(ErrorMessage = "Invalid Email address")]
 		[RegularExpression("/^\\w+[\\+\\.\\w-]*@([\\w-]+\\.)*\\w+[\\w-]*\\.([a-z]{2,4}|\\d+)$/i", ErrorMessage = "Email Address must be a valid email address.")]
-		public string Email { get; set; }
+		public override string Email { get; set; }
 
 		[Required(ErrorMessage = "Password is required")]
 		[DataType(DataType.Password)]
@@ -40,9 +40,9 @@ namespace FreshFarmMarket.Model
 		public string Photo { get; set; }
 
 		[Required(ErrorMessage = "About Me is required")]
-		public string AboutMe
-		{
-			get; set;
-		}
+		public string AboutMe { get; set; }
+
+		[Required]
+		public DateTime LastPasswordChangeDate {  get; set; }
 	}
 }

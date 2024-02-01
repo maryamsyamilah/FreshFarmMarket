@@ -55,7 +55,8 @@ namespace FreshFarmMarket.Pages
             var userId = User.Identity.Name;
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userId);
 
-            var protector = _dataProtectionProvider.CreateProtector("MySecretKey");
+            var dataProtectionProvider = DataProtectionProvider.Create("EncryptData");
+            var protector = dataProtectionProvider.CreateProtector("MySecretKey");
 
             FullName = WebUtility.HtmlDecode(user.FullName);
             try

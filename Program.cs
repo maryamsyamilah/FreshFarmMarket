@@ -1,15 +1,11 @@
-using Microsoft.AspNetCore.Identity;
 using FreshFarmMarket.Model;
-using FreshFarmMarket.ViewModels;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<UserDbContext>();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<UserDbContext>();
 builder.Services.AddDataProtection();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -20,6 +16,14 @@ builder.Services.AddSession(options =>
 	options.Cookie.HttpOnly = true;
 	options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+{
+    opt.Lockout.AllowedForNewUsers = true;
+    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+    opt.Lockout.MaxFailedAccessAttempts = 3;
+})
+.AddEntityFrameworkStores<UserDbContext>();
 
 
 builder.Services.ConfigureApplicationCookie(Config =>
